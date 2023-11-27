@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Server implements Runnable{
+public class Server {
     private int port;
     private ServerSocket serverSocket;
     private List<Socket> clients;
@@ -18,91 +18,44 @@ public class Server implements Runnable{
     public ObservableList<String> serverLog;
     public ObservableList<String> clientNames;
 
-    public Server(int port) {
+    public Server(int port) throws IOException {
         this.port = port;
         serverLog = FXCollections.observableArrayList();
         clientNames = FXCollections.observableArrayList();
         clients = new ArrayList<Socket>();
+        serverSocket = new ServerSocket(port);
     }
 
-    public void startServer() {
-        try {
-            serverSocket = new ServerSocket(this.port);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        serverLog = FXCollections.observableArrayList();
+    public int getPort() {
+        return port;
     }
 
-    @Override
-    public void run() {
-        while (true) {
-            listerForClient();
-            acceptClientSocket();
-        }
+    public void setPort(int port) {
+        this.port = port;
     }
 
-    private void listerForClient() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                serverLog.add("Listening for client");
-            }
-        });
+    public ServerSocket getServerSocket() {
+        return serverSocket;
     }
 
-    private void acceptClientSocket() {
-        try {
-            final Socket clientSocket = serverSocket.accept();
-            addClientSocket(clientSocket);
-            logClientConnected(clientSocket);
-            ClientThread clientThreadHolder = createClientThread(clientSocket);
-            Thread clientThread = new Thread(clientThreadHolder);
-            clientThread.setDaemon(true);
-            startClientThread(clientThread);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void setServerSocket(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
     }
 
-    private void addClientSocket(Socket clientSocket) {
-        clients.add(clientSocket);
+    public List<Socket> getClients() {
+        return clients;
     }
 
-    private void logClientConnected(Socket clientSocket) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                serverLog.add("Client " + clientSocket.getRemoteSocketAddress() + " connected");
-            }
-        });
+    public void setClients(List<Socket> clients) {
+        this.clients = clients;
     }
 
-    private ClientThread createClientThread(Socket clientSocket) {
-        ClientThread clientThreadHolder = new ClientThread(clientSocket, this);
-        clientThreads.add(clientThreadHolder);
-        return clientThreadHolder;
+    public ArrayList<ClientThread> getClientThreads() {
+        return clientThreads;
     }
 
-    private void startClientThread(Thread clientThread) {
-        clientThread.start();
+    public void setClientThreads(ArrayList<ClientThread> clientThreads) {
+        this.clientThreads = clientThreads;
     }
 
-    public void clientDisconnected(ClientThread client) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                serverLog.add("Client " + client.getClientSocket().getRemoteSocketAddress() + " disconnected");
-                clients.remove(clientThreads.indexOf(client));
-                clientNames.remove(clientThreads.indexOf(client));
-                clientThreads.remove(clientThreads.indexOf(client));
-            }
-        });
-    }
-
-    public void writeToAllSockets(String inputToServer) {
-        for (ClientThread clientThread : clientThreads) {
-            clientThread.writeToServer(inputToServer);
-        }
-    }
 }

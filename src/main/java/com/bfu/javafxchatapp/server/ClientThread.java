@@ -12,15 +12,15 @@ import java.net.SocketException;
 
 public class ClientThread implements Runnable{
     private Socket clientSocket;
-    private Server server;
+    private ServerService serverService;
     private BufferedReader incomingMessageReader;
     private PrintWriter outgoingMessageWriter;
     private String clientName;
 
     public ClientThread(Socket clientSocket, Server server) {
         try {
-            this.setClientSocket(clientSocket);
-            this.server = server;
+            this.clientSocket = clientSocket;
+            this.serverService = new ServerService(server);
             incomingMessageReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             outgoingMessageWriter = new PrintWriter(clientSocket.getOutputStream(), true);
         } catch (IOException e) {
@@ -28,29 +28,30 @@ public class ClientThread implements Runnable{
         }
     }
 
-    public void setClientSocket(Socket clientSocket) {
-        this.clientSocket = clientSocket;
-    }
-
     @Override
     public void run() {
         try {
             this.clientName = getClientNameFromNetwork();
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    server.clientNames.add(clientName + " - " + clientSocket.getRemoteSocketAddress());
-                }
-            });
-            String inputToServer;
-            while (true) {
-                inputToServer = incomingMessageReader.readLine();
-                server.writeToAllSockets(inputToServer);
-            }
+            addClientNameToList();
+            listenForIncomingMessages();
         } catch (SocketException e) {
-            server.clientDisconnected(this);
+            serverService.clientDisconnected(this);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void addClientNameToList() {
+        Platform.runLater(() -> {
+            serverService.getServer().clientNames.add(clientName + " - " + clientSocket.getRemoteSocketAddress());
+        });
+    }
+
+    private void listenForIncomingMessages() throws IOException {
+        String inputToServer;
+        while (true) {
+            inputToServer = incomingMessageReader.readLine();
+            serverService.writeToAllSockets(inputToServer);
         }
     }
 

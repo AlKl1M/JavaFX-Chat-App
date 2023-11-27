@@ -58,4 +58,15 @@ public class Server {
         this.clientThreads = clientThreads;
     }
 
+    @Override
+    public String toString() {
+        return "Server{" +
+                "port=" + port +
+                ", serverSocket=" + serverSocket +
+                ", clients=" + clients +
+                ", clientThreads=" + clientThreads +
+                ", serverLog=" + serverLog +
+                ", clientNames=" + clientNames +
+                '}';
+    }
 }

@@ -24,7 +24,7 @@ public class ClientThread implements Runnable{
             incomingMessageReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             outgoingMessageWriter = new PrintWriter(clientSocket.getOutputStream(), true);
         } catch (IOException e) {
-            e.printStackTrace();
+            handleInputOutputError();
         }
     }
 
@@ -61,6 +61,10 @@ public class ClientThread implements Runnable{
 
     public String getClientNameFromNetwork() throws IOException {
         return incomingMessageReader.readLine();
+    }
+
+    private void handleInputOutputError() {
+        System.err.println("Input/output error occurred while opening the socket");
     }
 
     public Socket getClientSocket() {

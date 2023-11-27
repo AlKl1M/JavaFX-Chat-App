@@ -16,13 +16,14 @@ public class ServerService implements Runnable {
 
     public void startServer() {
         try {
-            server.setServerSocket(new ServerSocket(server.getPort()));
+            openServerSocket();
+            initializeServerLog();
         } catch (IllegalArgumentException e) {
-            System.err.println("Invalid port");
+            handleInvalidPortError();
         } catch (SecurityException e) {
-            System.err.println("Insufficient permissions to open the socket");
+            handleInsufficientPermissionsError();
         } catch (IOException e) {
-            System.err.println("Input/output error occurred while opening the socket");
+            handleInputOutputError();
         }
         server.serverLog = FXCollections.observableArrayList();
     }
@@ -92,7 +93,27 @@ public class ServerService implements Runnable {
         }
     }
 
+    private void openServerSocket() throws IOException{
+        server.setServerSocket(new ServerSocket(server.getPort()));
+    }
+
+    private void initializeServerLog() {
+        server.serverLog = FXCollections.observableArrayList();
+    }
+
     public Server getServer() {
         return server;
+    }
+
+    private void handleInvalidPortError() {
+        System.err.println("Invalid port");
+    }
+
+    private void handleInsufficientPermissionsError() {
+        System.err.println("Insufficient permissions to open the socket");
+    }
+
+    private void handleInputOutputError() {
+        System.err.println("Input/output error occurred while opening the socket");
     }
 }

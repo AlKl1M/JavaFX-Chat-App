@@ -1,42 +1,18 @@
 package com.bfu.javafxchatapp.server;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerService implements Runnable {
-    private final Server server;
+    private Server server;
 
     public ServerService(Server server) {
         this.server = server;
     }
 
-    public void startServer() {
-        try {
-            openServerSocket();
-            initializeServerLog();
-        } catch (IllegalArgumentException e) {
-            handleInvalidPortError();
-        } catch (SecurityException e) {
-            handleInsufficientPermissionsError();
-        } catch (IOException e) {
-            handleInputOutputError();
-        }
-        server.serverLog = FXCollections.observableArrayList();
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            listerForClient();
-            acceptClientSocket();
-        }
-    }
-
-    private void listerForClient() {
+    private void listenForClient() {
         Platform.runLater(() -> {
             server.serverLog.add("Listening for client");
         });
@@ -49,10 +25,20 @@ public class ServerService implements Runnable {
             logClientConnected(clientSocket);
             ClientThread clientThreadHolder = createClientThread(clientSocket);
             Thread clientThread = new Thread(clientThreadHolder);
+            server.getClientThreads().add(clientThreadHolder);
             clientThread.setDaemon(true);
             startClientThread(clientThread);
+            //ServerController.threads.add(clientThread);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            listenForClient();
+            acceptClientSocket();
         }
     }
 
@@ -91,14 +77,6 @@ public class ServerService implements Runnable {
         for (ClientThread clientThread : server.getClientThreads()) {
             clientThread.writeToServer(inputToServer);
         }
-    }
-
-    private void openServerSocket() throws IOException{
-        server.setServerSocket(new ServerSocket(server.getPort()));
-    }
-
-    private void initializeServerLog() {
-        server.serverLog = FXCollections.observableArrayList();
     }
 
     public Server getServer() {

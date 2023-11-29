@@ -1,6 +1,5 @@
 package com.bfu.javafxchatapp.server;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

@@ -1,6 +1,5 @@
 package com.bfu.javafxchatapp.server;
 
-import com.bfu.javafxchatapp.client.Client;
 import javafx.application.Platform;
 
 import java.io.BufferedReader;

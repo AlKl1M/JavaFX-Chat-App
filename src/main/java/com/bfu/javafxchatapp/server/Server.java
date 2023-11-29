@@ -22,6 +22,7 @@ public class Server {
         serverLog = FXCollections.observableArrayList();
         clientNames = FXCollections.observableArrayList();
         clients = new ArrayList<Socket>();
+        clientThreads = new ArrayList<ClientThread>();
         serverSocket = new ServerSocket(port);
     }
 

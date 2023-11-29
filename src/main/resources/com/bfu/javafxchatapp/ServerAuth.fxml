@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="rootPane" alignment="CENTER" hgap="10" prefHeight="400.0" prefWidth="300.0" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="com.bfu.javafxchatapp.server.ServerController">
+<GridPane fx:id="rootPane" alignment="CENTER" hgap="10" prefHeight="400.0" prefWidth="300.0" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="com.bfu.javafxchatapp.server.ServerAuthController">
     <Text fx:id="portText" text="Port Number" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
         <font>
             <Font name="Tahoma" />

@@ -27,17 +27,17 @@ public class ServerApplication extends Application {
     }
 
     public Scene makePortUIScene() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bfu/javafxchatapp/ServerApplication.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bfu/javafxchatapp/ServerAuth.fxml"));
         Parent root = fxmlLoader.load();
-        ServerController controller = fxmlLoader.getController();
+        ServerAuthController controller = fxmlLoader.getController();
         controller.setServerApplication(this);
         return new Scene(root, 400, 300);
     }
 
     public Scene makeServerUIScene(ServerService serverService) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bfu/javafxchatapp/ServerUI.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bfu/javafxchatapp/Server.fxml"));
         Parent root = fxmlLoader.load();
-        ServerUIController controller = fxmlLoader.getController();
+        ServerController controller = fxmlLoader.getController();
         controller.setServerService(serverService);
         return new Scene(root, 400, 300);
     }

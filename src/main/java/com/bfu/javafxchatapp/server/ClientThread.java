@@ -18,7 +18,7 @@ public class ClientThread implements Runnable{
 
     public ClientThread(Socket clientSocket, Server server) {
         try {
-            this.clientSocket = clientSocket;
+            this.setClientSocket(clientSocket);
             this.serverService = new ServerService(server);
             incomingMessageReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             outgoingMessageWriter = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -50,6 +50,10 @@ public class ClientThread implements Runnable{
         String inputToServer;
         while (true) {
             inputToServer = incomingMessageReader.readLine();
+            if (inputToServer == null) {
+                serverService.clientDisconnected(this);
+                break;
+            }
             serverService.writeToAllSockets(inputToServer);
         }
     }
@@ -72,5 +76,9 @@ public class ClientThread implements Runnable{
 
     public String getClientName() {
         return clientName;
+    }
+
+    public void setClientSocket(Socket clientSocket) {
+        this.clientSocket = clientSocket;
     }
 }

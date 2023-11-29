@@ -28,7 +28,7 @@ public class ServerService implements Runnable {
             server.getClientThreads().add(clientThreadHolder);
             clientThread.setDaemon(true);
             startClientThread(clientThread);
-            //ServerController.threads.add(clientThread);
+            ServerApplication.threads.add(clientThread);
         } catch (IOException e) {
             e.printStackTrace();
         }

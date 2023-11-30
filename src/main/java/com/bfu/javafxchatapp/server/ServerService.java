@@ -25,7 +25,8 @@ public class ServerService implements Runnable {
             logClientConnected(clientSocket);
             ClientThread clientThreadHolder = createClientThread(clientSocket);
             Thread clientThread = new Thread(clientThreadHolder);
-            server.getClientThreads().add(clientThreadHolder);
+            //Я не знаю что это за строчка, но держите ее закоменченой
+            //server.getClientThreads().add(clientThreadHolder);
             clientThread.setDaemon(true);
             startClientThread(clientThread);
             ServerApplication.threads.add(clientThread);

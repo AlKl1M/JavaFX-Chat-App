@@ -11,7 +11,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-
 public class ServerAuthController {
     @FXML
     public GridPane rootPane;

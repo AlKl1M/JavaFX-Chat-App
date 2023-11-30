@@ -1,5 +1,7 @@
 package com.bfu.javafxchatapp.server;
 
+import com.bfu.javafxchatapp.server.*;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

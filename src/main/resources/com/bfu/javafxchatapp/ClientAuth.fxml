@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="rootPane" alignment="CENTER" hgap="10" prefHeight="400.0" prefWidth="300.0" vgap="10" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bfu.javafxchatapp.client.ClientAuthController">
+    <Text text="Enter your nickname" GridPane.rowIndex="0">
+        <font>
+            <Font name="Tahoma" />
+        </font>
+    </Text>
+    <TextField fx:id="userNicknameField" GridPane.rowIndex="1" />
+    <Text text="Enter host name" GridPane.rowIndex="2">
+        <font>
+            <Font name="Tahoma" />
+        </font>
+    </Text>
+    <TextField fx:id="hostNameField"  GridPane.columnIndex="0" GridPane.rowIndex="3" />
+    <Text fx:id="portText" text="Port Number" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+        <font>
+            <Font name="Tahoma" />
+        </font>
+    </Text>
+    <TextField fx:id="portNumberField" GridPane.rowIndex="5" />
+    <Button fx:id="approvalButton" prefHeight="24.0" prefWidth="171.0" text="Done" GridPane.rowIndex="6"/>
+</GridPane>

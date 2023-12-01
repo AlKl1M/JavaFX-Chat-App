@@ -3,6 +3,7 @@ package com.bfu.javafxchatapp.server;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -37,9 +38,9 @@ public class ServerAuthController {
             hidePrimaryStage();
             showServerUI(serverService);
         } catch (IllegalArgumentException e) {
-            setErrorLabelText("Invalid port number");
+            handleException(e, "Invalid port number");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            handleException(e, "Error!");
         }
     }
 
@@ -71,6 +72,14 @@ public class ServerAuthController {
 
     private void setErrorLabelText(String errorMessage) {
         errorLabel.setText(errorMessage);
+    }
+
+    void handleException(Exception e, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Port error!");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public void setServerApplication(ServerApplication serverApplication) {

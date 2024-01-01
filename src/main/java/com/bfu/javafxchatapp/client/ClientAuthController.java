@@ -2,9 +2,12 @@ package com.bfu.javafxchatapp.client;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+
+import java.io.IOException;
 
 public class ClientAuthController {
     @FXML
@@ -21,28 +24,27 @@ public class ClientAuthController {
 
     @FXML
     private Button approvalButton;
+    private ClientApplication clientApplication;
 
-    public Button getApprovalButton() {
-        return approvalButton;
+    @FXML
+    void handleApprovalButton(ActionEvent event) {
+        try {
+            Client client = new Client(getHostName(), Integer.parseInt(getPortNumber()), getUserNickname());
+            ClientService clientService = new ClientService(client);
+            Thread clientThread = new Thread(clientService);
+            clientThread.setDaemon(true);
+            clientThread.start();
+            showServerUI(clientService);
+        } catch(NumberFormatException | IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
-    public TextField getPortNumberField() {
-        return portNumberField;
+    private void showServerUI(ClientService clientService) throws IOException {
+        Scene clientUIScene = clientApplication.makeChatBox(clientService);
+        clientApplication.getPrimaryStage().setScene(clientUIScene);
+        clientApplication.getPrimaryStage().show();
     }
-
-    public TextField getHostNameField() {
-        return hostNameField;
-    }
-
-    public TextField getUserNicknameField() {
-        return userNicknameField;
-    }
-
-    public GridPane getRootPane() {
-        return rootPane;
-    }
-
-    public void approveLogin(ActionEvent event) {};
 
     public String getUserNickname() {
         return this.userNicknameField.getText();
@@ -54,5 +56,9 @@ public class ClientAuthController {
 
     public String getPortNumber() {
         return this.portNumberField.getText();
+    }
+
+    public void setClientApplication(ClientApplication clientApplication) {
+        this.clientApplication = clientApplication;
     }
 }

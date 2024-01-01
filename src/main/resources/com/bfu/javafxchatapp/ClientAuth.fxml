@@ -27,5 +27,5 @@
         </font>
     </Text>
     <TextField fx:id="portNumberField" GridPane.rowIndex="5" />
-    <Button fx:id="approvalButton" prefHeight="24.0" prefWidth="171.0" text="Done" GridPane.rowIndex="6"/>
+    <Button fx:id="approvalButton" prefHeight="24.0" prefWidth="171.0" text="Done" GridPane.rowIndex="6" onAction="#handleApprovalButton"/>
 </GridPane>

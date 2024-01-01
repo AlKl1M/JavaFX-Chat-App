@@ -15,6 +15,14 @@ public class ClientController {
         return chatbox;
     }
 
+    public void setClientService(ClientService clientService) {
+        this.getChatbox().setItems(clientService.getClient().chatLog);
+        this.getInput().setOnAction(event -> {
+            clientService.writeToServer(getInput().getText());
+            getInput().clear();
+        });
+    }
+
     public TextField getInput() {
         return input;
     }
